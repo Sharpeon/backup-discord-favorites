@@ -2,7 +2,9 @@ import json
 import requests
 import time
 import threading
+import os
 from multiprocessing.pool import ThreadPool
+
 
 FAVORITES_DIR = "./favorites/"
 DATA_FILE = "data.json"
@@ -19,7 +21,7 @@ def get_data_dict():
 
 def get_gifs_urls(favorites):
     """Returns the urls of the gifs of the favorites
-    Some favorites have a mp4 link and a gif link for some reason, I only pick the gifs."""
+    Some favorites also have a mp4 link some reason, I only pick the gifs."""
 
     urls = []
     for favorite in favorites:
@@ -68,7 +70,7 @@ def show_advancement(total):
     while current_download < total:
         advancement = int(current_download / total * 100)
         print("Downloading... " + str(advancement) + "%", end="\r")
-        time.sleep(4)
+        time.sleep(1)
         
 
 def main():
@@ -78,15 +80,18 @@ def main():
 
     # Save the urls to a file
     write_urls_to_file(gifs_urls)
-    print("Your favortie gifs urls have been saved to " + URLS_OUTPUT_FILE) 
-
+    print("Your favorite gifs urls have been saved to " + URLS_OUTPUT_FILE + "\n") 
 
     # Asking if they want to download all the gifs
     while True:
-        answer = input("Do you want to download all the gifs? (y/n) ")
+        answer = input("Do you want to download all the gifs?\nIt might take a while if you have a lot (y/n) ")
         if answer == "y":
             advancement_thread = threading.Thread(target=show_advancement, args=(len(gifs_urls),))
             advancement_thread.start()
+            
+            # Creates directory if it doesnt exist
+            if not os.path.exists(FAVORITES_DIR):
+                os.makedirs(FAVORITES_DIR)
 
             # Downloading all the gifs
             pool = ThreadPool(10)
