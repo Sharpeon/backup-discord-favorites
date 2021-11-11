@@ -3,10 +3,11 @@ import requests
 import time
 import threading
 import os
+import sys
 from multiprocessing.pool import ThreadPool
 
 
-FAVORITES_DIR = "./favorites/"
+FAVORITES_DIR = "/favorites/"
 DATA_FILE = "data.json"
 URLS_OUTPUT_FILE = "output.txt"
 
@@ -98,6 +99,9 @@ def main():
             pool.map(download_gif, gifs_urls)
             pool.close()
             pool.join()
+
+            output_dir = os.path.dirname(sys.argv[0]) + FAVORITES_DIR[:-1]
+            print("\nDone downloading! Ouput directory is : " + output_dir)
 
             break
         elif answer == "n":
