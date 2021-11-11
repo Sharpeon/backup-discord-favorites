@@ -7,7 +7,7 @@ import sys
 from multiprocessing.pool import ThreadPool
 
 
-FAVORITES_DIR = "/favorites/"
+FAVORITES_DIR = "./favorites/"
 DATA_FILE = "data.json"
 URLS_OUTPUT_FILE = "output.txt"
 
@@ -15,6 +15,9 @@ current_download = 0
 
 def get_data_dict():
     """Returns the data of favorites as a dictionnary"""
+    if os.path.getsize(DATA_FILE) == 0:
+        raise Exception("The data json file is empty. Did you follow the steps correctly ?")
+
     with open(DATA_FILE) as f:
         data = json.load(f)
 
@@ -99,8 +102,8 @@ def main():
             pool.map(download_gif, gifs_urls)
             pool.close()
             pool.join()
-
-            output_dir = os.path.dirname(sys.argv[0]) + FAVORITES_DIR[:-1]
+            
+            output_dir = os.path.dirname(sys.argv[0]) + FAVORITES_DIR[1:-1]
             print("\nDone downloading! Ouput directory is : " + output_dir)
 
             break
@@ -109,7 +112,6 @@ def main():
 
     # Say goodbye
     print("Have a nice day ! :)")
-
 
 if __name__ == "__main__":
     main()
