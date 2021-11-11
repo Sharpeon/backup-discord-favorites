@@ -7,7 +7,7 @@ Luckily for us, the links of the gifs are stored in Discord's local storage unti
 
 ### Prerequisite
 - This is a python script, so you'll need to have python installed, duh.
-- You will also need the requests module (can be installed by typing `pip install requests` in a terminal
+- You will also need the requests module (can be installed by typing `pip install requests` in a terminal)
 
 ### Setting up the backup
 
